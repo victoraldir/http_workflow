@@ -1,6 +1,6 @@
 # HTTP Follower
 
-That's very simple CLI that executes requests in order and make assertions agains results.
+That's a very simple CLI that executes requests in order and make assertions against results.
 It loads the workflow from a yaml file 
 
 ## Workflow example
