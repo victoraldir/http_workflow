@@ -1,6 +1,6 @@
 # HTTP Follower
 
-That's very simple CLI that executes requests in order and make assertions agains results. 
+That's very simple CLI that executes requests in order and make assertions agains results.
 It loads the workflow from a yaml file 
 
 ## Workflow example
@@ -32,4 +32,12 @@ workflow:
       name: Expect code 200
       expectedcode: 200
       onfailure: retry
+```
+
+## Run workflow sample
+
+Within the root folder, execute the command bellow
+
+```
+go run cmd/main.go sample/workflow.yml
 ```
