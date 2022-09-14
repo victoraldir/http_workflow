@@ -41,3 +41,7 @@ Within the root folder, execute the command bellow
 ```
 go run cmd/main.go sample/workflow.yml
 ```
+
+## What you should see
+
+![](assets/http_workflow.gif)
