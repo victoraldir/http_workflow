@@ -19,7 +19,7 @@ func init() {
 	//enconderConfig.StacktraceKey = ""
 
 	//config.EncoderConfig = enconderConfig
-	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
 
 	log, err = config.Build(zap.AddCallerSkip(1))
 	if err != nil {
