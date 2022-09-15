@@ -39,7 +39,7 @@ workflow:
 Within the root folder, execute the command bellow
 
 ```
-go run cmd/main.go sample/workflow.yml
+docker-compose run http_workflow sample/workflow.yml
 ```
 
 ## What you should see

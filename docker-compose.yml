@@ -1,0 +1,5 @@
+version: '3'
+services:
+  http_workflow:
+    container_name: http_workflow
+    build: .
