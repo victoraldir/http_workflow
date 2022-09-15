@@ -40,7 +40,20 @@ func (e *executeRequestFlowUseCase) Execute(workflowRequest dto.WorkflowRequest)
 
 			resp, err := e.client.Do(&request)
 			logger.Debug(fmt.Sprintf("[Response] %v \n", resp))
+			time.Sleep(time.Duration(request.RetryPeriod) * time.Second)
+
 			if err != nil {
+
+				if assertion.OnFailure == "retry" {
+					logger.Info(fmt.Sprintf("[Request failed] Got error: %s. Retrying request: %s \n", err.Error(), requestPlan.Request))
+					continue
+				}
+
+				if assertion.OnFailure == "skip" {
+					logger.Info(fmt.Sprintf("Assertion failed: %s. Skipping... \n", err.Error()))
+					break
+				}
+
 				logger.Error("Error executing request", err)
 				return err
 			}
@@ -52,7 +65,6 @@ func (e *executeRequestFlowUseCase) Execute(workflowRequest dto.WorkflowRequest)
 
 				if assertion.OnFailure == "retry" {
 					logger.Info(fmt.Sprintf("[Assertion failed] %s. Retrying... \n", err.Error()))
-					time.Sleep(time.Duration(request.RetryPeriod) * time.Second)
 					continue
 				}
 

@@ -1,6 +1,6 @@
 # HTTP Follower
 
-That's very simple CLI that executes requests in order and make assertions agains results.
+That's a very simple CLI that executes requests in order and make assertions against results.
 It loads the workflow from a yaml file 
 
 ## Workflow example
@@ -39,7 +39,7 @@ workflow:
 Within the root folder, execute the command bellow
 
 ```
-go run cmd/main.go sample/workflow.yml
+docker compose run workflow sample/workflow.yml
 ```
 
 ## What you should see

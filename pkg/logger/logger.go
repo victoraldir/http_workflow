@@ -13,14 +13,8 @@ func init() {
 
 	config := zap.NewDevelopmentConfig()
 
-	// enconderConfig := zap.NewProductionEncoderConfig()
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	// enconderConfig.TimeKey = "time"
-	//enconderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	//enconderConfig.StacktraceKey = ""
-
-	//config.EncoderConfig = enconderConfig
-	config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
+	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
 
 	log, err = config.Build(zap.AddCallerSkip(1))
 	if err != nil {
