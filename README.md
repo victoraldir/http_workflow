@@ -39,7 +39,7 @@ workflow:
 Within the root folder, execute the command bellow
 
 ```
-docker-compose run http_workflow sample/workflow.yml
+docker compose run workflow sample/workflow.yml
 ```
 
 ## What you should see
