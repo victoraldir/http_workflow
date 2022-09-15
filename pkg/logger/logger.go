@@ -6,19 +6,44 @@ import (
 )
 
 var log *zap.Logger
+var config zap.Config
 
-func init() {
+func Init(level string) {
 	var err error
 
-	config := zap.NewDevelopmentConfig()
+	config = zap.NewDevelopmentConfig()
 
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	//config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+
+	setLogLevel(level)
 
 	log, err = config.Build(zap.AddCallerSkip(1))
 	if err != nil {
 		panic(err)
 	}
+}
+
+func setLogLevel(level string) {
+
+	switch level {
+	case "debug":
+		config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	case "info":
+		config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
+	case "warn":
+		config.Level = zap.NewAtomicLevelAt(zap.WarnLevel)
+	case "error":
+		config.Level = zap.NewAtomicLevelAt(zap.ErrorLevel)
+	case "panic":
+		config.Level = zap.NewAtomicLevelAt(zap.PanicLevel)
+	case "fatal":
+		config.Level = zap.NewAtomicLevelAt(zap.FatalLevel)
+	default:
+		config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
+	}
+
+	log, _ = config.Build(zap.AddCallerSkip(1))
 }
 
 func Debug(message string, tags ...string) {
