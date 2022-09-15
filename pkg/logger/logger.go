@@ -8,13 +8,15 @@ import (
 var log *zap.Logger
 var config zap.Config
 
-func init() {
+func Init(level string) {
 	var err error
 
-	config := zap.NewDevelopmentConfig()
+	config = zap.NewDevelopmentConfig()
 
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	//config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+
+	setLogLevel(level)
 
 	log, err = config.Build(zap.AddCallerSkip(1))
 	if err != nil {
@@ -22,7 +24,7 @@ func init() {
 	}
 }
 
-func SetLogLevel(level string) {
+func setLogLevel(level string) {
 
 	switch level {
 	case "debug":
@@ -40,6 +42,8 @@ func SetLogLevel(level string) {
 	default:
 		config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
 	}
+
+	log, _ = config.Build(zap.AddCallerSkip(1))
 }
 
 func Debug(message string, tags ...string) {
