@@ -39,7 +39,14 @@ workflow:
 Within the root folder, execute the command bellow
 
 ```
-docker compose run workflow sample/workflow.yml
+go run cmd/main.go < sample/workflow.yml 
+```
+
+(Optional) 
+You can also run it from the latest docker image
+
+```
+docker run -i victoraldir/http_workflow < workflow-edge.yml
 ```
 
 ## What you should see
