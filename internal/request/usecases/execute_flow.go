@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/victoraldir/http-follower/internal/request/core/domain"
 	"github.com/victoraldir/http-follower/internal/request/core/ports"
 	"github.com/victoraldir/http-follower/internal/request/dto"
 	"github.com/victoraldir/http-follower/pkg/logger"
@@ -82,11 +81,6 @@ func (e *executeRequestFlowUseCase) Execute(workflowRequest dto.WorkflowRequest)
 
 		}
 	}
-
-	return nil
-}
-
-func (e *executeRequestFlowUseCase) AssertResponse(assertion domain.Assertion, response domain.Response) error {
 
 	return nil
 }
