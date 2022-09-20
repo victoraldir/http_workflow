@@ -5,9 +5,10 @@ import (
 )
 
 type Assertion struct {
-	Name         string `json:"name"`
-	ExpectedCode int    `json:"expected"`
-	OnFailure    string `json:"onfailure"`
+	Name               string `json:"name"`
+	ExpectedCode       int    `json:"expected"`
+	OnFailure          string `json:"onfailure"`
+	MinValidAssertions int    `json:"minValidAssertions"`
 }
 
 // Validate validates the assertion

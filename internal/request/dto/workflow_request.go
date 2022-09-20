@@ -12,18 +12,20 @@ type WorkflowRequest struct {
 }
 
 type RequestPlan struct {
-	Request        string         `json:"request" yaml:"request"`
-	Method         string         `json:"method" yaml:"method"`
-	Url            string         `json:"url" yaml:"url"`
-	Body           string         `json:"body" yaml:"body"`
-	RetryPeriod    int            `json:"retry_period" yaml:"retry_period"`
-	AsssertionPlan AsssertionPlan `json:"assertion" yaml:"assertion"`
+	Request        string            `json:"request" yaml:"request"`
+	Method         string            `json:"method" yaml:"method"`
+	Url            string            `json:"url" yaml:"url"`
+	Body           string            `json:"body" yaml:"body"`
+	Headers        map[string]string `json:"headers" yaml:"headers"`
+	RetryPeriod    int               `json:"retry_period" yaml:"retry_period"`
+	AsssertionPlan AsssertionPlan    `json:"assertion" yaml:"assertion"`
 }
 
 type AsssertionPlan struct {
-	Name         string `json:"name" yaml:"name"`
-	ExpectedCode int    `json:"expectedcode" yaml:"expectedcode"`
-	OnFailure    string `json:"onfailure" yaml:"onfailure"`
+	Name               string `json:"name" yaml:"name"`
+	ExpectedCode       int    `json:"expectedcode" yaml:"expectedcode"`
+	OnFailure          string `json:"onfailure" yaml:"onfailure"`
+	MinValidAssertions int    `json:"minValidAssertions" yaml:"minValidAssertions"`
 }
 
 // Create function that converts RequestPlan to Request
@@ -37,6 +39,7 @@ func (r *RequestPlan) ToRequest() domain.Request {
 		Method:      r.Method,
 		URL:         r.Url,
 		Body:        r.Body,
+		Headers:     r.Headers,
 		RetryPeriod: r.RetryPeriod,
 		Assertion:   r.AsssertionPlan.ToAsssertion(),
 	}
@@ -45,8 +48,9 @@ func (r *RequestPlan) ToRequest() domain.Request {
 // create function that converts AssertionPlan to Assertion
 func (a *AsssertionPlan) ToAsssertion() domain.Assertion {
 	return domain.Assertion{
-		Name:         a.Name,
-		ExpectedCode: a.ExpectedCode,
-		OnFailure:    a.OnFailure,
+		Name:               a.Name,
+		ExpectedCode:       a.ExpectedCode,
+		OnFailure:          a.OnFailure,
+		MinValidAssertions: a.MinValidAssertions,
 	}
 }

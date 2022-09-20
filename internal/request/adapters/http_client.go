@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"io"
 	"net/http"
+	"strings"
+	"time"
 
 	"github.com/victoraldir/http-follower/internal/request/core/domain"
 )
@@ -19,7 +21,9 @@ type (
 // NewHTTPClient returns a new instance of HTTPClient.
 func NewHTTPClient() *httpClient {
 	return &httpClient{
-		client: &http.Client{},
+		client: &http.Client{
+			Timeout: 2 * time.Second,
+		},
 	}
 }
 
@@ -29,6 +33,16 @@ func (c *httpClient) Do(req *domain.Request) (*domain.Response, error) {
 	httpReq, err := http.NewRequest(req.Method, req.URL, bytes.NewBuffer([]byte(req.Body)))
 	if err != nil {
 		return nil, err
+	}
+
+	if req.Headers != nil {
+		for key, element := range req.Headers {
+			if strings.ToLower(key) == "host" {
+				httpReq.Host = element
+			} else {
+				httpReq.Header.Set(key, element)
+			}
+		}
 	}
 
 	resp, err := c.client.Do(httpReq)
