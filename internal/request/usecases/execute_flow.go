@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/victoraldir/http-follower/internal/request/core/ports"
@@ -32,6 +33,8 @@ func (e *executeRequestFlowUseCase) Execute(workflowRequest dto.WorkflowRequest)
 	for _, requestPlan := range workflowRequest.Requests {
 		request := requestPlan.ToRequest()
 		assertion := request.Assertion
+		minValidAssertions := int(math.Max(float64(assertion.MinValidAssertions), 1))
+		validAssertionCount := 0
 
 		logger.Info(fmt.Sprintf("[Executing request] %s \n", requestPlan.Request))
 
@@ -45,6 +48,7 @@ func (e *executeRequestFlowUseCase) Execute(workflowRequest dto.WorkflowRequest)
 
 				if assertion.OnFailure == "retry" {
 					logger.Info(fmt.Sprintf("[Request failed] Got error: %s. Retrying request: %s \n", err.Error(), requestPlan.Request))
+					validAssertionCount = 0
 					continue
 				}
 
@@ -64,6 +68,7 @@ func (e *executeRequestFlowUseCase) Execute(workflowRequest dto.WorkflowRequest)
 
 				if assertion.OnFailure == "retry" {
 					logger.Info(fmt.Sprintf("[Assertion failed] %s. Retrying... \n", err.Error()))
+					validAssertionCount = 0
 					continue
 				}
 
@@ -76,9 +81,17 @@ func (e *executeRequestFlowUseCase) Execute(workflowRequest dto.WorkflowRequest)
 				return err
 			}
 
-			logger.Info(fmt.Sprintf("Assertion %s passed \n", assertion.Name))
-			break
+			validAssertionCount++
 
+			logger.Info(
+				fmt.Sprintf("Assertion %s passed [%d/%d] \n",
+					assertion.Name, validAssertionCount, minValidAssertions,
+				),
+			)
+
+			if validAssertionCount >= minValidAssertions {
+				break
+			}
 		}
 	}
 
